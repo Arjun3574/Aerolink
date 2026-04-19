@@ -27,6 +27,7 @@ export async function POST(req: Request) {
     const rawMessage = body.message || "";
     const victimName = body.victimName || "Unknown";
     const manualLocation = body.manualLocation || "Unknown Location";
+    const origId = body.origId || "";
     const lat = body.lat || 0;
     const lng = body.lng || 0;
 
@@ -52,6 +53,7 @@ export async function POST(req: Request) {
       timestamp: now.toISOString(), 
       victimName,
       manualLocation,
+      origId,
       isNew: true
     });
 

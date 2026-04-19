@@ -22,7 +22,7 @@ export async function POST(req: Request) {
     const analysis = await reconstructSignal(data.message, data.victimName, data.manualLocation);
 
     const ticket = {
-      id: Math.random().toString(36).substring(2, 9),
+      id: data.origId || Math.random().toString(36).substring(2, 9),
       original: data.message,
       reconstructed: analysis.reconstructed,
       urgency: analysis.urgency,
@@ -32,7 +32,8 @@ export async function POST(req: Request) {
       victimName: data.victimName,
       timestamp: new Date().toISOString(),
       status: "pending",
-      adminNotes: [],
+      markerColor: "none" as const,
+      adminNotes: [] as any[],
       source: "ESP32 Device"
     };
 

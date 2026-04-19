@@ -15,7 +15,8 @@ export interface Ticket {
   victimName?: string;
   timestamp: string;
   status: string;
-  adminNotes: { text: string, timestamp: string }[];
+  markerColor: "green" | "yellow" | "red" | "none";
+  adminNotes: { text: string, timestamp: string, sender: "admin" | "system" }[];
   source?: string;
 }
 

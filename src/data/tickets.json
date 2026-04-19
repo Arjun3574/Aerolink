@@ -1,62 +1,62 @@
 [
   {
     "id": "ok7ojpw",
-    "original": "e9cfef711b12cf713c754f758c113928:8d4f98926032ecd963cd37ce6d61c9b6423fb79e4d5ad0b92ee63303009831a1a4ca89fa246646864f02e665ad6d1df4",
-    "reconstructed": "6de90ee120341b894c3c5c0530215a18:ab1b5ac98d505cc68b90d1da143baeec6585a3e70802fe2597977be985aab06440370cd5f9e09dc839c9b42e2ead9b4d34f1ea84b4c2ed2cc0b56731cfa44614",
+    "original": "c61a4e4bc2065c5535918d81e3f440d0:57545651ff0ab3fb86582d98337cf2b0bbc9915be656a58ce9018fca98771c6408457820b62e7ef0870939650507df51",
+    "reconstructed": "d70b7423a92a1545f04f1ee03acca8a0:2be797183f910ac805776d96d49d0ea2035227e8181fa3e32ca3aa7dcf23d498d752e341eec97c98e0fd38c24dab34b678c91f2a2ea2d7225aa7a44241501868",
     "urgency": 10,
     "category": "Flood / Water Rescue",
-    "location": "2b67ed1c28c77fc339ea90f023f87e45:c449d0fee677e24731906f0681b3b906b61bea74362f6f53edace14fe6562fbe",
+    "location": "99ab3f924380ef244772775037a3f332:aa80df8d7b212ec66a6dbd4863f0277a2eded82bb4422cba11bb13812925bb00",
     "timestamp": "2026-04-18T12:55:07.893Z",
-    "status": "received",
+    "status": "completed",
     "adminNotes": [
       {
-        "text": "c39e4f6bfca0abd74844f2015a09c044:a852ddf5bb2549b5020191c11a9ac281e7a4690e208820230d47c3432cec1b819e703d0963021d3b51c4ae6240457bb4",
+        "text": "449c79ad02b1ced06fd79253017c3d82:e7d7ea45360f06456da4de2f5d04073fd4a8c963325e9154a6f26cd96f3c20043dd90368be5d5fb463ad32b68702a350",
         "timestamp": "2026-04-18T12:56:47.064Z"
       }
     ],
     "manualLocation": "",
-    "victimName": "b35c11c7fcd19c0d06357a5ae3fb8bd4:f999d2229df24ebad64effd288060221"
+    "victimName": "c42f896819c1249f5076e80e3bf0f410:0cf4cd5227f4c5b22deda14a2771315e"
   },
   {
     "id": "roxvwvj",
-    "original": "a30071885d13b7d9a9e97f4f5e1af828:996e9f9d4905ea97617fa982bd5e70da2bd5bebdbd74497ec97ee5c254b48971f435ee85401c750ec9ea047735535664d8e008f47d367b9597eef850d2e51439",
-    "reconstructed": "1f8fcd8722c3483c0335f32a904f1c8b:21378e3f9140e5f34a4d2c4a8290821d3c318f8d330338cb528cf95280eaff88d1db941521b5256a37137cbe8af13436d9e241902f7be41c830b21ebebd2f62ed1076c759ebe275cffcac524c5732ee8a269a956e8357cca1d09ad07b1539e860c162bb8b859b8eb19dd1a46f9c5f15b",
+    "original": "2196eb94f5aae9d4a56a424945c069c0:780d0ffad3e5002fa1863aeaa462d149d0f730449a209412a5ccae732c4202bff2675530168b04eb259f9ac33353e7eae9bfbe3606e28d37bbef6037eb7e3053",
+    "reconstructed": "1e7a219ff00ccadb84007bf2b8c98719:2406fadbc4e2ab5d4a126484372ecfaebba7d0a79221e1785609e0675d4027328de19be33e77f118a03932ec4508831c7789116479fe858a58cdacc28190d1b668aea3db84e0bc3448ca602312542a5e685459fe8728a796efc6b5ee1279a4b5f44de68517a276eaf6e65613fa315899",
     "urgency": 10,
     "category": "Structural Fire - Commercial Building - Multiple Persons Reported",
-    "location": "848ff16aa81a9279c9078439db36ba48:b4980543239e2b21d30ae9c24d36b5699ceb28e7f052f86bc9e2dd8b525531c1",
+    "location": "ca5a95461258e7e3870926e84dffd30a:eaff28f1f1536981dee695a48735cc04af9dd397eef791db98298894ae564bb5",
     "timestamp": "2026-04-18T12:57:31.447Z",
-    "status": "pending",
+    "status": "completed",
     "adminNotes": [],
     "manualLocation": "",
-    "victimName": "0da3b0a91a50794f4b7859fc9a17608b:f0f82c1913147357b4ceb2d1af82dc2f"
+    "victimName": "cc6d6bdb9141399081a2c697e63ef5b5:d5f7102312d843c7149a4aee856fdaa4"
   },
   {
     "id": "7jumy04",
-    "original": "4bee3ba10b2e4ed9b311ea0609c864a5:34c1ef5d846138ee45d63b9b4dedabd1eb48a4cbbcdd8c5d65d83882281deb5fef165238a7f44527e6f32d15d3b7ed62",
-    "reconstructed": "d110d2aa7ebdafc07ca4948cb3553fb8:c495c545f0a00aa40508d2c8a1ba258954a10e1f623457caa1995b31bb11c6fd1d72c48c4a2b1226276c2f9c22f9729d95ccd32d4b1f2896050a06fcd13d4a8189d8c300a3ebcb18c23994290c724e4e",
+    "original": "2e732d8099708bc4aee3a0a4aeb4d7c1:822e0cf83cff0628ffd7db2bd8b98cae600210fcd851e1d7013b0a729fd7cc01dc91b2428bba1122b31bb2264f12c2f3",
+    "reconstructed": "2cd5fa1fb91d15badf93f9e107ab0630:8a4ac40b8eca431fec550d83794670eb0199c41a6c108b3771d86316b67d3278c0873b800b2d795e80ddcf8f31c8e3594ac43ea05bc43444ea3ef43b7658083da72f9eaa84b44a125b44b236a891880a",
     "urgency": 9,
     "category": "Humanitarian Crisis & Rescue",
-    "location": "e6e151a53f946b6c4dd5e1b921ebaf06:21d50c9ac652e8d3f223f43659f76eaa3573ce2a3de021664ce125d55cd036bb",
+    "location": "25a45cc55a89c75db26d9331119a5a9a:83a265502c6a82e631a7d890a40db33acb49fa44fa4d62489b8ea67c523cc130",
     "timestamp": "2026-04-18T12:59:27.405Z",
-    "status": "pending",
+    "status": "completed",
     "adminNotes": [],
     "manualLocation": "",
-    "victimName": "e1ba4c91ce78937fea3f1318f65e6e35:598b3af91e991b80b9fd486ccdb3a7b6"
+    "victimName": "8122830390883ccce7d25ea8a20224be:aaf717d4dde14cd624a4731808e40523"
   },
   {
     "id": "52ls6o7",
-    "original": "ca90ba28751e9a3515c32f584bde48c2:822e9db7d3666442117a7482d76625b814ee271c7e1d6f70fc073437ff177e7b",
-    "reconstructed": "e18fa552a715ff68f6362ebe4fe9e06a:312d729098e0d470d4573b1ed981f89005836e3ddd727cd49bb788685916796326dfa0c28a3315ee75808a368e02fe0300679016c99dc6a30a4469715cf4a87d9c0f45151ce12b06b53bb097fb2afaf8c35e6323455e189b00a7023b4646fe36",
+    "original": "e8bcfae1a9686e77edc1f543711e24c5:6029bfaf303dc7dcc785acd1c69f9f2eb90d7c20ff0870f6da68d8a91021e07d",
+    "reconstructed": "d39e6cdd208ceacb5ae8bbe5d503fa57:75047802a78aec4b367c835e667ea2cb7ef65f46245903e8dfe2bb6c584c708de6103b3b7848c444506de0674ce03844dab19e7522f429cc8565b8d37a41e999fe07b33bbf6a92a40734c2cec246a6a887e905d6d455c615f664ed95f25eeda2",
     "urgency": 9,
     "category": "Severe Distress",
-    "location": "44226a516327983378fcfef45f222d69:a4b25a7d6242a8ad0d71c34b3e15eaacc4a198313b33d612832a4ae48949bb26",
-    "manualLocation": "0d05bf3cd69598e555d325e30412caf2:772f5e515276c8e64b4a0e2443aa463a",
-    "victimName": "585f9ad468b2a00ca23ebc135b19959e:54b8c8906b27245d8eec64321fa3161a",
+    "location": "5a10b03a7488b7644dcb5404a7f8e338:bd5a988d821d88d7a1bcc7c37990609386a6c0f61806a72479348ac15eb1af31",
+    "manualLocation": "a0e7d7ad063f2b7d02eb744cd38ffd62:4c30642704159e8cc4802d48dc00f5d2",
+    "victimName": "0b2c7d8d8ebefb46bed90edbf349c33c:676a8d094381337829c54669c22c19c0",
     "timestamp": "2026-04-18T20:38:28.817Z",
-    "status": "received",
+    "status": "completed",
     "adminNotes": [
       {
-        "text": "91ac34851a053af76b1e4a884b89947c:0d623389f69f05f65884f42f6f92183c155d1850c243b801bedc86cd63fafb97e52929567222a76c8102b8f81ef578224b896b673f7b7a5bc9ea5332758d3ac8",
+        "text": "88ac3f3710edf495a6edaab987e257e8:a43f0e7375e0449e86084966e147e854255b103764037880f46cc575b159b8951cf775eed366eeffadc54737f30fae93f7eb785fc559723f53746dc10afe6665",
         "timestamp": "2026-04-18T20:38:54.831Z"
       }
     ],
@@ -64,30 +64,215 @@
   },
   {
     "id": "n5ru5uf",
-    "original": "61896efa97ffded17ce2df08bc65fb04:7b2e0af6e13bd626b28bc482e4e28b6fc3f4e2b387bdaef3ec6cf3fd00ec977cdcd004645eb4ae9cf74faced2a1ae2d9",
-    "reconstructed": "c81d11005fbaf1a6cddd18045699649d:47db6b47c145fa274a5fb6727f4cdd0c269ca9f3389218e1497b8791cbff910ff3c3afe5ed54319083893773c7861d56a8c56393aadc817bf9ea6e3091715574a6e4fba6e866d1db4968d51323babfe0",
+    "original": "997cdf306e95cc435f42e696e5967ab3:131c7e782693c71d0af6aa16629038a43410ba39abf67609bab7fd2176d9af74550c7837f5d76102c96cc524f02c4020",
+    "reconstructed": "531eaebc39c5e224502e0e2ed4cb475c:358c77437a0c19b47724167f0f9cd3c2cc24e8f1bc6f3d771197ba4471320e49e1778e427c468ebf853b82bc2cc76a7cd82eb3e8520faafabeeecd908d277a55eeb56371ed55e1ed359097a5c206662d",
     "urgency": 10,
     "category": "Trauma",
-    "location": "aae1f9ecfbe2df8aa40b7f62dfb17091:defbc1a211d09f06643a90127b04d3ac6d53ddbe4e41eb983a5de6c7e860cddd",
-    "manualLocation": "53bfa3660682a09c9813cc80937eebdc:d22675bf5c8878586fbb206d8d37bda0",
-    "victimName": "2b08f4df29d2128620812dedc0722391:3bb25b6c23cf6a5a140a454cbc1b0f73",
+    "location": "821bd70d5083303678b230a9f7ec332c:411bdfb36468ee7d432c00d13b60bf566ab0a94a7071f5945167e049a46dbe29",
+    "manualLocation": "be869ea7cec9ce0621df3a51a46e1e70:1d2a584daf3f6e3efa46932151960f55",
+    "victimName": "b0280809dee7848ff83ebcf006d1a7e9:9d2bfb5253b9f1f83ad8a097a371f6f5",
     "timestamp": "2026-04-18T20:41:15.398Z",
-    "status": "pending",
+    "status": "completed",
     "adminNotes": [],
     "source": "ESP32 Device"
   },
   {
     "id": "zt7puq9",
-    "original": "07b3291b8caaf563e5792f77e02b0869:5fbe3d829a400c2a20b88d456eed1c5b4b1200d61b119200c62a7f0afd3f5944",
-    "reconstructed": "f8b7845653b82f772bcd1279dac471c8:8e3cec788ac7f2462a0505d85370e0e89a1c328458fb55aa864279ca65080c59a3c1bc08926ad0ff8243e00a7afb22d69c6037fa8acd5992c7a0ed78dea0198a7c7b43da8f29889f0b4bec0be0588af1",
+    "original": "70b04aeadfe0c8cb1a5bda773986f647:e2d850660d6e6b8af78b5e48d10a0d0ec7e13eb6a6a7c8f93bd4f5384dccbc90",
+    "reconstructed": "f00ba53b7da803c022e3221c19ffd0b1:189d99fff30515440a79fcdf663a518c01daabd415113224c79c93b8f5a53a8c5b1b8abaddba37d69fe6dc8c63da908200094781cb713cf33fbc456ae07890265accd660fc26484ea7c434f2033f71ff",
     "urgency": 10,
     "category": "Fire",
-    "location": "acfcade216454c904839d5173af6474c:d1469e0fa3b9d06cf1b0ac6d02c43223c106a15463ca456b32a233ed03932458",
-    "manualLocation": "76a38a03304ba0a32fcc52e34a7727d8:a702f295f3967a56a2f555b83c04edbf",
-    "victimName": "34fc29aca968c0b544d61b020aa511b2:0092fc5d0ed1332f2c618c380dcb2a77",
+    "location": "adb3a1377225136b7d4537bb65bd6266:9a790be9de14fda57ea5a1852111c65d23efe1352f88540bce94df39c842ec74",
+    "manualLocation": "4e81781646f5416417ba5047d0e7b969:e6497b6a33fb78a85b1f8926313ba0d4",
+    "victimName": "fa8a7fe1016f2c55dd555ef836b1ea77:9fdf7295cda9b9ed9e354b69e13d8234",
     "timestamp": "2026-04-18T20:42:23.989Z",
-    "status": "pending",
+    "status": "completed",
     "adminNotes": [],
+    "source": "ESP32 Device"
+  },
+  {
+    "id": "blwgszb",
+    "original": "b694ec232bf7bf2927f5f440362df99e:5e1ca2ac5c60022ca5c1e7601d56c37eceb6fe923cb3b386c4e28f6d7f87e9129e76bedb3394721ccab8d443b6926d3f",
+    "reconstructed": "51acf199aaed8314580b78f9c64bdc47:1511502092541064235be2bbcf42c80ac5417dff92a0e878e61c282bf0b6db66b4dec5755f9a401ffe4e7244e438b4ef",
+    "urgency": 10,
+    "category": "Drowning",
+    "location": "699b623248c0feaaebbaf4b1ec0c1f67:4d3f99e33ccd41e775626199b8d7ab7355717ca7f2c24938bfd8107c51753758",
+    "manualLocation": "693a43485b0af647d7a498196ecd8be7:b5bdb34fbcfcd7d44bfce50772ebac9ba14dd23f1bd625f4ea00ea3f6ba16999",
+    "victimName": "07bb170c26415e0eed5c5d9251b31598:9418a79e7a2d89bf697d35f724ab94dee015f01a857a5b8ca7892e0bf5a961d1",
+    "timestamp": "2026-04-18T23:52:10.364Z",
+    "status": "completed",
+    "markerColor": "yellow",
+    "adminNotes": [
+      {
+        "text": "53c8fc85f071f96b3aeeffb7bffdf817:aec97eb60f1feac8e21707de9fe398f6f777ccd109a6a7871936d3b0065b13f1",
+        "timestamp": "2026-04-18T23:52:54.820Z",
+        "sender": "system"
+      }
+    ],
+    "source": "ESP32 Device"
+  },
+  {
+    "id": "b59a13k",
+    "original": "396946ee8b8dc64d91bfd968cd8775d2:fd7649a00d349c59bcd7a3879fb56fbbc4ddce23a7d75e2b9278190b258f4304",
+    "reconstructed": "0e93a609ad43d0a2933a31b97d028572:58ae08433eb4dccf36f117e1ccc018cfee3114f3d816383a7efb3254ffea1f93b64b615764a0df4ab6a16cf683df9d3fd3feda811c271637ef7c6126f2289169ffe501b4b9502606d798e6905e34b8ad45e855ad9219749288968032aff6cf580f498790657ff4901ad0dc37370346ff100e5f07ade09a38dd9b85a0b810e68bd656b7a26ce92a32c475023f979df147",
+    "urgency": 10,
+    "category": "Trauma",
+    "location": "55a352ccc4510ee7155819ca08b6a10f:bb4f10edf0124a8891df963a3f7ac69ce17358bc15f58881438d6ace17fbf334",
+    "manualLocation": "81252b81b5c09cd7d01ec7cf68095da7:47a010edbdb67ae507b706e840e518a695caf4f8b950c05b50bc7ecf8c66d556",
+    "victimName": "02685df2f532448c389f8e86b8eb1c25:77f06422866669ddf8ad967fa7dfdba5",
+    "timestamp": "2026-04-18T23:55:39.598Z",
+    "status": "completed",
+    "markerColor": "green",
+    "adminNotes": [
+      {
+        "text": "685e15835ec087b2c948618119a13775:386bad37913e0061129fba783a4c9086c2db7cd8808964f8a17303eeae798c21",
+        "timestamp": "2026-04-18T23:55:45.459Z",
+        "sender": "system"
+      },
+      {
+        "text": "27fdde0583890819a956d48f4ae91099:0edaee22767392dde6702eb65e67d5cd4069b3c9be1e6dae59c89e47a4f6de54",
+        "timestamp": "2026-04-18T23:56:03.934Z",
+        "sender": "system"
+      }
+    ],
+    "source": "ESP32 Device"
+  },
+  {
+    "id": "ha0sia0",
+    "original": "dbe42408a8dbfd2d9e2afe51f2bf3ffb:3cf4041716f80f1a08c1c70bce312bd8953ce786105ee1809d1111b3674e9abf3e92d41e17aebfba81ddbc7a5c25fe9e",
+    "reconstructed": "b86b1a88588de8c60584850db82a0be7:ee478bfe0019727ae68fd365e85a541995d0cdc04dde15e88bb341982c075f3fdddef15a82c598dd78a52e1dd01ecd1e76cbfa9e3c5afd92ded51cace81e2a627a457e3a6e27c16a8c98974e59a35a98",
+    "urgency": 8,
+    "category": "Flood",
+    "location": "20a8f7211c734a87469653cbd1af9a0b:8afa2b545698f2ef391d3ea45098c2e59dfb003307ced8f7c8bc3fcc8b66f55e",
+    "manualLocation": "609c9331dbc5fb77551fc97eae35f29e:7c9c9f8e05e5276e6b16ee71b3fa714f685624243d28e2f043200556eb72fced",
+    "victimName": "5bb8d5b3a5886b91f9595cd0211c6c39:59ec042ac9f13787b711d1c3a3369c98",
+    "timestamp": "2026-04-19T00:09:22.692Z",
+    "status": "completed",
+    "markerColor": "yellow",
+    "adminNotes": [
+      {
+        "text": "1a2026e7afae31f623ff4a11a3e8a1c2:4abc9d82e11fe297388ef2219892032a11e34416c8ea27929c911380f73c4d1e",
+        "timestamp": "2026-04-19T00:09:34.302Z",
+        "sender": "system"
+      }
+    ],
+    "source": "ESP32 Device"
+  },
+  {
+    "id": "TKT-5820",
+    "original": "133cf85f474d7657a60396dc708b4d4f:b9b45fb7b961237415627f337c788252c00247051d789aafd584fb6b059c3f1f",
+    "reconstructed": "286e13113231a98ce14cf640b31f7570:f45927c2b663fa442f69e8f423edc8324698bce7f758f80750ae200dc55e5fb2d2042f46f5565e33ed1d823945f46ea1",
+    "urgency": 10,
+    "category": "Drowning",
+    "location": "7ad569ba9566c24af0dab185b053cc28:ecf902b511fe1a982909f88bf394b4a41a62d15710783febef7d3ca7fe76ae36",
+    "manualLocation": "c8bd0610cea8a578a4b08cbc569e78ee:b3e2bea76a5afd3ec09c985186534433cb6e07d95aaabbcc0458641a4aaae73b",
+    "victimName": "2ff16b752e1bec88863fbc975bc1b752:36c3c31f68618484a35b888167b555c3",
+    "timestamp": "2026-04-19T00:14:29.931Z",
+    "status": "completed",
+    "markerColor": "green",
+    "adminNotes": [
+      {
+        "text": "837400f4a52314234e733151dbdc9c49:b72c9b155cdec833fe8d8300bcd26fd96e158f3a95c126e6dc249ae93e6bf4d0",
+        "timestamp": "2026-04-19T00:14:35.370Z",
+        "sender": "system"
+      },
+      {
+        "text": "93ef231cacd97ec8ca956397e24b1c1e:ac08f5adc2b052d41f46327f5acd7e19113497dfe0c2b593f3c1a2464ab2d815",
+        "timestamp": "2026-04-19T00:15:10.856Z",
+        "sender": "system"
+      },
+      {
+        "text": "9517669266cac15255a6420f78034682:666c0267ec19d00186dccdb93d9f421be8a22bbe443043795573ba38c10fb939",
+        "timestamp": "2026-04-19T00:15:16.473Z",
+        "sender": "system"
+      },
+      {
+        "text": "b7c602b43db80da2aa32005009a2628d:d3c1734c0d11468194cfbe06e09dbfccee6e491a507c40946088cdb4b4f5addb",
+        "timestamp": "2026-04-19T00:15:19.783Z",
+        "sender": "system"
+      },
+      {
+        "text": "a91a4381e83595f43b457dbefc83e4fe:858d354a263e176af05d918c8ecc8c216c6771cafa74a8b1c954f7dff926685d",
+        "timestamp": "2026-04-19T00:15:24.530Z",
+        "sender": "system"
+      },
+      {
+        "text": "e995dd2f27d51e5c7ecf4b5c393f34f4:c3353f32aa8fc21c6b17e0fa17085b9af1003ab5c3769dad4135398d537c8235",
+        "timestamp": "2026-04-19T00:15:35.114Z",
+        "sender": "system"
+      },
+      {
+        "text": "98430b328085437f8c2e83ae95e3e8f4:bcdf9b338309097fcaabe4e2e79490bf3ef77a8555cf5b68c8d734b9c341c122",
+        "timestamp": "2026-04-19T00:15:46.315Z",
+        "sender": "admin"
+      },
+      {
+        "text": "7c6911958f49e0ff6feb326085345ebe:f07885005e4122ce35a36aca889b46ff8821bc817621949c6145282a1bd0c0e3",
+        "timestamp": "2026-04-19T00:15:54.680Z",
+        "sender": "admin"
+      },
+      {
+        "text": "6937dc69a869a2d5951216c0878457cf:c3d6ae3db2cc2a450c21644c1eb07c17",
+        "timestamp": "2026-04-19T00:16:01.384Z",
+        "sender": "admin"
+      },
+      {
+        "text": "1a66a07eec1fd1a926c1da21d43e2d40:2ec34e67672117eb460b540f1b63168f",
+        "timestamp": "2026-04-19T00:16:15.100Z",
+        "sender": "admin"
+      }
+    ],
+    "source": "ESP32 Device"
+  },
+  {
+    "id": "TKT-2955",
+    "original": "15a25cb1aeb4e97a2281d0bb4a570a60:97518e5259283115dac34d040a11345943169095c88942f692650fd6e475a82763fa27b5e9ce00d8704c77d44483a350",
+    "reconstructed": "7f29d10c631c11a6d96c27adba62888a:ac470967ea161545b6b53a665ab9ee0646bc93097b8b8f4f25888316770f01f52d14d2480df85d8c94afd65aa27b180a",
+    "urgency": 5,
+    "category": "General Alarm",
+    "location": "beeaee063f853c6586f05e82b52095cd:b76bf9850e57d909d67c51304902685eabf0ab24ef468248628e3edafc35bfbe",
+    "manualLocation": "208957a9e6105094f22b8e36c19045f1:25910fd681951c6833404532ac5f3acceffdc9be0713dd7193711464cbb5243e",
+    "victimName": "c3be1ad380b0506f1ab904937793994b:9f749818a4b42c7d7f12fd1f7a343058",
+    "timestamp": "2026-04-19T01:10:23.067Z",
+    "status": "completed",
+    "markerColor": "none",
+    "adminNotes": [],
+    "source": "ESP32 Device"
+  },
+  {
+    "id": "fqj359n",
+    "original": "b62e446404f198b2631d99650c268e9d:2379b8a5053b0c3241249b2e48fd477f5225d533722b2ce5c6355c5a0abc6188c662566aef99a6f697315b724775aa9f",
+    "reconstructed": "cb227ad74a035df27d90b6103b3417d9:ad9d27f816ff541b7ea1a8bf5e82e0de7b77e4df70113c9700898cb070cab96cbf6ed9af6dba8eab2ac6acac88383657",
+    "urgency": 5,
+    "category": "General Alarm",
+    "location": "11e1889d479c9133ac6d653a0ca6759a:62a73373ca40120bef2aefd01f9e11cac009ea38bd2d11d0f44b088e81c61b81",
+    "timestamp": "2026-04-19T01:13:32.958Z",
+    "status": "completed",
+    "markerColor": "none",
+    "adminNotes": [],
+    "source": "Manual Uplink",
+    "manualLocation": "",
+    "victimName": "ddc409a527cd0cfb8e133fdbbe8e7e05:fa28e85d3f06bb1fb966143ba8afbbb9"
+  },
+  {
+    "id": "TKT-9094",
+    "original": "c80f822d2baa6acdecafcdc3681c860c:c87a16c644c2ae8e78873d94514d68c74f92dc7630da7aa3b7d74f1a8e3798b411c580efb4b52df749e728ecb7ae967482e75d4934dc16d4ae1129527f32927f",
+    "reconstructed": "7294eb2d4656fb56097d4422abd2765f:5a797a686f12a16cc8a5d5e215ed63411c6e136f020995f7bf7ef424eb87c084ba9a41819a621910c273735df3510e7b443b5568c9a02aa8391332c19499cf84",
+    "urgency": 5,
+    "category": "SIGNAL UNRECONSTRUCTED",
+    "location": "f4574525a1719ed08c298dc35ba1fca7:0481e6c4e5a749d0125b8fcd351d278cfaf65b2d4512f2e588a3a78adfda0f61",
+    "manualLocation": "e3ef1d3016a5362e56a3a9cec0598f78:99a6003ddc531bdd0ada949d4efe9598d807c8542b42b5147575d37c5c76fb8d",
+    "victimName": "27bd0a34a9516ab16c50b0cfcf59b9dc:dfdda04a17f1dbd6a3503d92a41b024b",
+    "timestamp": "2026-04-19T01:22:25.919Z",
+    "status": "completed",
+    "markerColor": "yellow",
+    "adminNotes": [
+      {
+        "text": "d7a2c6716c4534c5b31c2fa3d635b30f:55d7415350d88af8e77f51d6ade2e907c768b9209e690f6e0feecb2fac5e8f00",
+        "timestamp": "2026-04-19T01:22:38.114Z",
+        "sender": "system"
+      }
+    ],
     "source": "ESP32 Device"
   }
 ]

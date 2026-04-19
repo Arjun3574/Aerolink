@@ -1,212 +1,124 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { 
-  Radio, 
-  Shield, 
-  Clock,
-  Wifi,
-  Activity,
-  Cpu,
-  RefreshCcw,
-  Zap,
-  CheckCircle2,
-  AlertCircle,
-  Database,
-  ArrowRight,
-  Send
-} from "lucide-react";
+import { Radio, Shield, Clock, Activity, Cpu, RefreshCcw, Zap, CheckCircle2, Database } from "lucide-react";
 
 export default function MonitorPage() {
-  const [externalSignal, setExternalSignal] = useState({ message: "LISTENING...", state: "IDLE", timestamp: "", victimName: "" });
-  const [signalLog, setSignalLog] = useState<{msg: string, time: string, status: string, name: string}[]>([]);
+  const [sig, setSig] = useState({ message: "LISTENING...", state: "IDLE", timestamp: "", victimName: "" });
+  const [log, setLog] = useState<{ msg: string; time: string; status: string; name: string }[]>([]);
 
   useEffect(() => {
-    const pollMonitor = async () => {
+    const poll = async () => {
       try {
-        const res = await fetch("/api/data");
-        if (!res.ok) return;
-        const data = await res.json();
-        
-        if (data.timestamp !== externalSignal.timestamp) {
-           setExternalSignal(data);
-           if (data.state !== "IDLE") {
-             setSignalLog(prev => [{
-               msg: data.message, 
-               time: new Date(data.timestamp).toLocaleTimeString(),
-               status: data.state,
-               name: data.victimName || "Unknown"
-             }, ...prev].slice(0, 10));
-           }
-        }
-      } catch (err) {
-        console.error("Monitor Sync Error");
-      }
+        const r = await fetch("/api/data"); if (!r.ok) return; const d = await r.json();
+        if (d.timestamp !== sig.timestamp) { setSig(d); if (d.state !== "IDLE") setLog(p => [{ msg: d.message, time: new Date(d.timestamp).toLocaleTimeString(), status: d.state, name: d.victimName || "Unknown" }, ...p].slice(0, 10)); }
+      } catch {}
     };
+    const i = setInterval(poll, 1000); return () => clearInterval(i);
+  }, [sig.timestamp]);
 
-    const interval = setInterval(pollMonitor, 1000); 
-    return () => clearInterval(interval);
-  }, [externalSignal.timestamp]);
+  const label = sig.state === "IDLE" ? "LISTENING" : sig.state === "PROCESSING" ? "DECODING" : sig.state === "DISPATCHED" ? "UPLINKED" : sig.state;
 
   return (
-    <div className="min-h-screen bg-[#020617] text-slate-300 font-serif selection:bg-blue-500/30">
-      {/* HUD Header */}
-      <nav className="border-b border-slate-800 bg-[#020617] px-8 py-4 flex justify-between items-center sticky top-0 z-50 backdrop-blur-md bg-opacity-80">
-        <div className="flex items-center gap-4">
-          <div className="p-2 bg-blue-600/10 border border-blue-500/20 rounded-md">
-             <Cpu className="text-blue-500" size={20} />
+    <div className="min-h-screen bg-[var(--bg)] text-[var(--text)] font-[Inter,system-ui,sans-serif]">
+      {/* Nav */}
+      <nav className="border-b border-[var(--border)] px-8 py-4 flex justify-between items-center sticky top-0 z-50 bg-[var(--bg)]">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-lg bg-[var(--mint)] flex items-center justify-center">
+            <Cpu size={14} className="text-[var(--bg)]" />
           </div>
           <div>
-            <h1 className="text-[10px] font-black uppercase tracking-[6px] text-white">Operational Intelligence Node</h1>
-            <div className="flex items-center gap-2 mt-0.5">
-               <span className="text-[8px] font-black text-blue-500 uppercase tracking-widest animate-pulse flex items-center gap-1">
-                  <div className="w-1 h-1 bg-blue-500 rounded-full" /> Hardware Sync Active
-               </span>
+            <h1 className="text-[14px] font-bold uppercase tracking-[3px]">Intelligence Node</h1>
+            <div className="flex items-center gap-1.5 mt-0.5">
+              <span className="status-dot status-dot-live" />
+              <span className="text-[10px] font-medium text-[var(--mint)] uppercase tracking-wider">Sync Active</span>
             </div>
           </div>
         </div>
-        
-        <div className="flex gap-6 items-center">
-           <div className="text-right hidden sm:block">
-              <p className="text-[7px] font-black text-slate-500 uppercase tracking-widest">Intake End-Point</p>
-              <p className="text-[9px] font-bold text-slate-400 font-mono">/api/data</p>
-           </div>
-           <div className="flex items-center gap-2 bg-slate-900/50 border border-slate-800 px-3 py-1.5 rounded-sm">
-              <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
-              <span className="text-[9px] font-black uppercase text-slate-300 tracking-widest">Live</span>
-           </div>
+        <div className="flex gap-4 items-center">
+          <div className="text-right hidden sm:block">
+            <p className="text-[10px] text-[var(--text-3)] uppercase tracking-wider">Endpoint</p>
+            <p className="text-[12px] text-[var(--frost)] font-mono">/api/data</p>
+          </div>
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[var(--surface)] border border-[var(--border)]">
+            <span className="status-dot status-dot-live" />
+            <span className="text-[11px] font-semibold uppercase tracking-wider">Live</span>
+          </div>
         </div>
       </nav>
 
       <main className="p-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-7xl mx-auto">
-          
-          {/* Main Monitor Display */}
-          <div className="lg:col-span-8 space-y-8">
-             <div className="bg-slate-900/20 border border-slate-800 p-8 rounded-lg relative shadow-2xl overflow-hidden min-h-[450px] flex flex-col justify-center">
-                {/* HUD Elements */}
-                <div className="absolute top-4 left-4 border-l border-t border-slate-700 w-4 h-4" />
-                <div className="absolute top-4 right-4 border-r border-t border-slate-700 w-4 h-4" />
-                <div className="absolute bottom-4 left-4 border-l border-b border-slate-700 w-4 h-4" />
-                <div className="absolute bottom-4 right-4 border-r border-b border-slate-700 w-4 h-4" />
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 max-w-6xl mx-auto">
+          {/* Main */}
+          <div className="lg:col-span-8">
+            <div className="bento-card p-8 min-h-[420px] flex flex-col justify-center space-y-8">
+              <div>
+                <p className="stat-label mb-2">Intake Status</p>
+                <h2 className="text-6xl font-extralight text-[var(--mint)] uppercase tracking-tighter leading-none">{label}</h2>
+              </div>
 
-                <div className="space-y-10 relative z-10 text-center lg:text-left">
-                   <div className="space-y-2">
-                      <div className="flex items-center gap-2 text-blue-500 justify-center lg:justify-start">
-                         <Activity size={12} className="animate-pulse" />
-                         <span className="text-[9px] font-black uppercase tracking-[4px]">CodeRed Intake Status</span>
-                      </div>
-                      <h2 className="text-7xl font-normal text-white uppercase tracking-tighter leading-none">
-                         {externalSignal.state === "IDLE" ? "LISTENING" : 
-                          externalSignal.state === "PROCESSING" ? "DECODING" : 
-                          externalSignal.state === "DISPATCHED" ? "UPLINK_DONE" : externalSignal.state}
-                      </h2>
-                   </div>
-
-                   <div className="bg-slate-950/60 border border-slate-800/50 p-10 rounded-sm space-y-6 backdrop-blur-sm border-l-4 border-l-blue-500 shadow-2xl">
-                      <div className="flex justify-between items-center border-b border-slate-800/50 pb-3">
-                         <div className="flex items-center gap-2">
-                           <Database size={12} className="text-slate-600" />
-                           <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest italic">
-                             {externalSignal.victimName ? `${externalSignal.victimName} • RAW PAYLOAD` : "AWAITING INTERRUPT"}
-                           </span>
-                         </div>
-                         <span className="text-[8px] font-mono text-blue-500 bg-blue-500/5 px-2 py-0.5 border border-blue-500/20">
-                            AES_SECURED
-                         </span>
-                      </div>
-                      <p className="text-4xl font-normal text-slate-200 leading-tight tracking-tight italic font-serif">
-                         "{externalSignal.message || "Awaiting hardware interrupt from Base Station..."}"
-                      </p>
-                      <div className="flex items-center justify-between pt-4">
-                         <div className="flex items-center gap-2">
-                            <Clock size={14} className="text-slate-600" />
-                            <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">
-                               {externalSignal.timestamp ? new Date(externalSignal.timestamp).toLocaleTimeString() : "--:--:--"}
-                            </span>
-                         </div>
-                         <div className="flex items-center gap-1.5 text-emerald-500">
-                             <Zap size={12} className="animate-bounce" />
-                             <span className="text-[9px] font-black uppercase tracking-widest">AI VALIDATED</span>
-                         </div>
-                      </div>
-                   </div>
-
-                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                      <div className="stat-node">
-                         <Radio size={16} className="text-blue-500 mb-2" />
-                         <p className="stat-tag">Source</p>
-                         <p className="stat-val">ESP32-STN</p>
-                      </div>
-                      <div className="stat-node">
-                         <Shield size={16} className="text-slate-500 mb-2" />
-                         <p className="stat-tag">Security</p>
-                         <p className="stat-val">ENCRYPTED</p>
-                      </div>
-                      <div className="stat-node">
-                         <Zap size={16} className="text-amber-500 mb-2" />
-                         <p className="stat-tag">Protocol</p>
-                         <p className="stat-val">CodeRed_v2</p>
-                      </div>
-                      <div className="stat-node border-blue-500/50 bg-blue-500/5">
-                         <CheckCircle2 size={16} className="text-blue-500 mb-2" />
-                         <p className="stat-tag text-blue-400">Dispatch</p>
-                         <p className="stat-val">AUTOMATED</p>
-                      </div>
-                   </div>
+              <div className="p-6 rounded-xl bg-[var(--bg)] border border-[var(--border)] space-y-4" style={{ borderLeftWidth: '3px', borderLeftColor: 'var(--mint)' }}>
+                <div className="flex justify-between items-center pb-2 border-b border-[var(--border)]">
+                  <span className="text-[11px] text-[var(--text-3)] uppercase tracking-wider italic">
+                    {sig.victimName ? `${sig.victimName} · Payload` : "Awaiting Interrupt"}
+                  </span>
+                  <span className="text-[10px] text-[var(--mint)] font-mono">AES</span>
                 </div>
-             </div>
-          </div>
+                <p className="text-3xl font-extralight text-[var(--text)] leading-tight italic">
+                  &ldquo;{sig.message || "Waiting..."}&rdquo;
+                </p>
+                <div className="flex justify-between items-center pt-2 text-[11px] text-[var(--text-3)]">
+                  <span className="flex items-center gap-1.5"><Clock size={11} /> {sig.timestamp ? new Date(sig.timestamp).toLocaleTimeString() : "--:--:--"}</span>
+                  <span className="flex items-center gap-1 text-[var(--teal)]"><Zap size={10} /> Validated</span>
+                </div>
+              </div>
 
-          {/* Signal Stream */}
-          <div className="lg:col-span-4 space-y-6">
-             <div className="flex justify-between items-center px-1">
-                <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[4px]">Signal Waterfall</h3>
-                <RefreshCcw size={10} className="text-slate-700 animate-spin-slow" />
-             </div>
-             <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
-                {signalLog.map((log, i) => (
-                  <div key={i} className="bg-slate-900/40 border border-slate-800 p-4 rounded-sm animate-in slide-in-from-right-4 group hover:border-slate-600 transition-colors">
-                     <div className="flex justify-between items-center mb-2">
-                        <span className={`text-[8px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded ${
-                          log.status === "DISPATCHED" ? "text-emerald-500 bg-emerald-500/5" : "text-blue-500 bg-blue-500/5"
-                        }`}>
-                           {log.status}
-                        </span>
-                        <span className="text-[8px] text-slate-600 font-mono">{log.time}</span>
-                     </div>
-                     <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{log.name}</p>
-                     <p className="text-xs text-slate-200 font-normal leading-relaxed italic border-l border-slate-700 pl-3">
-                        "{log.msg.slice(0, 80)}{log.msg.length > 80 ? '...' : ''}"
-                     </p>
+              <div className="grid grid-cols-4 gap-3">
+                {[
+                  { icon: Radio, label: "Source", val: "ESP32", c: "var(--mint)" },
+                  { icon: Shield, label: "Security", val: "AES-256", c: "var(--frost)" },
+                  { icon: Zap, label: "Protocol", val: "CodeRed", c: "var(--warning)" },
+                  { icon: CheckCircle2, label: "Dispatch", val: "Auto", c: "var(--mint)" },
+                ].map((s, i) => (
+                  <div key={i} className="lucid-card p-3 text-center">
+                    <s.icon size={14} style={{ color: s.c }} className="mx-auto mb-1.5" />
+                    <p className="text-[9px] text-[var(--text-3)] uppercase tracking-wider">{s.label}</p>
+                    <p className="text-[12px] font-semibold text-[var(--text)]">{s.val}</p>
                   </div>
                 ))}
-                {signalLog.length === 0 && (
-                  <div className="py-40 text-center opacity-10">
-                     <Radio size={40} className="mx-auto mb-4 animate-ping" />
-                     <p className="text-[9px] font-black uppercase tracking-[6px]">Scanning Frequencies</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Waterfall */}
+          <div className="lg:col-span-4 space-y-4">
+            <div className="flex justify-between items-center">
+              <h3 className="text-[15px] font-bold text-[var(--text)]">Signal Log</h3>
+              <RefreshCcw size={10} className="text-[var(--text-3)]" />
+            </div>
+            <div className="space-y-2 max-h-[550px] overflow-y-auto pr-1 custom-scrollbar">
+              {log.map((l, i) => (
+                <div key={i} className="lucid-card p-3.5">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="bc-badge bg-[var(--surface-2)] border border-[var(--border)]" style={{ color: l.status === "DISPATCHED" ? 'var(--mint)' : 'var(--teal)' }}>{l.status}</span>
+                    <span className="text-[10px] text-[var(--text-3)] font-mono">{l.time}</span>
                   </div>
-                )}
-             </div>
+                  <p className="text-[12px] font-semibold text-[var(--frost)] uppercase tracking-wider mb-1">{l.name}</p>
+                  <p className="text-[13px] text-[var(--text-2)] italic border-l-2 border-[var(--plum)] pl-2.5">
+                    &ldquo;{l.msg.slice(0, 70)}{l.msg.length > 70 ? '...' : ''}&rdquo;
+                  </p>
+                </div>
+              ))}
+              {log.length === 0 && (
+                <div className="py-28 text-center">
+                  <Radio size={28} className="mx-auto mb-3 text-[var(--text-3)] opacity-15" />
+                  <p className="text-[11px] text-[var(--text-3)] uppercase tracking-[3px]">Scanning</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </main>
-
-      <style jsx global>{`
-        .stat-node {
-          @apply bg-slate-950/40 border border-slate-800/50 p-4 rounded flex flex-col items-center justify-center text-center;
-        }
-        .stat-tag {
-          @apply text-[7px] font-black uppercase text-slate-500 tracking-[1px] mb-0.5;
-        }
-        .stat-val {
-          @apply text-[10px] font-bold text-slate-100 uppercase;
-        }
-        .custom-scrollbar::-webkit-scrollbar { width: 3px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { @apply bg-slate-800 rounded-full; }
-        .animate-spin-slow { animation: spin 10s linear infinite; }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-      `}</style>
     </div>
   );
 }

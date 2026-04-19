@@ -129,7 +129,7 @@ export default function Dashboard() {
                   <button
                     key={preset}
                     onClick={() => setInputText(preset)}
-                    className="text-[10px] px-3 py-1 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 transition-colors"
+                    className="text-[12px] px-3 py-1 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 transition-colors"
                   >
                     Simulate Signal
                   </button>
@@ -176,13 +176,13 @@ export default function Dashboard() {
                   >
                     <div className="flex justify-between items-start mb-4">
                       <div className="flex items-center gap-3">
-                        <span className={`px-2 py-1 rounded text-[10px] font-bold uppercase tracking-tighter ${
+                        <span className={`px-2 py-1 rounded text-[12px] font-bold uppercase tracking-tighter ${
                           msg.urgency >= 8 ? "bg-red-500/20 text-red-500" : 
                           msg.urgency >= 5 ? "bg-amber-500/20 text-amber-500" : "bg-green-500/20 text-green-500"
                         }`}>
                           {msg.category}
                         </span>
-                        <span className="text-[10px] text-gray-500 font-mono">
+                        <span className="text-[12px] text-gray-500 font-mono">
                           {msg.timestamp.toLocaleTimeString()}
                         </span>
                       </div>
@@ -202,12 +202,12 @@ export default function Dashboard() {
 
                     <div className="flex flex-wrap gap-2 mt-4 pt-4 border-t border-white/5">
                       {msg.entities.map((entity, i) => (
-                        <div key={i} className="flex items-center gap-1 text-[10px] bg-white/5 px-2 py-1 rounded">
+                        <div key={i} className="flex items-center gap-1 text-[12px] bg-white/5 px-2 py-1 rounded">
                           <MapPin className="w-2 h-2 text-cyan-400" />
                           {entity}
                         </div>
                       ))}
-                      <div className="ml-auto text-[10px] text-gray-600">
+                      <div className="ml-auto text-[12px] text-gray-600">
                         AI Confidence: {(msg.confidence * 100).toFixed(0)}%
                       </div>
                     </div>

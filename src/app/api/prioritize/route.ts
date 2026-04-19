@@ -6,7 +6,7 @@ export async function POST() {
     const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
     if (!apiKey) return NextResponse.json({ error: "API Key not configured." }, { status: 500 });
 
-    const tickets = getTickets();
+    const tickets = getTickets().filter((t: any) => t.status !== "completed");
     if (tickets.length === 0) return NextResponse.json([]);
 
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;

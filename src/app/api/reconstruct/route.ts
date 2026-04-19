@@ -19,7 +19,8 @@ export async function POST(req: Request) {
       location: location || { lat: 0, lng: 0 }, 
       timestamp: new Date().toISOString(), 
       status: "pending", 
-      adminNotes: [],
+      markerColor: "none" as const,
+      adminNotes: [] as any[],
       source: source || "Manual Uplink"
     };
     
@@ -50,12 +51,13 @@ export async function GET(req: Request) {
 export async function PATCH(req: Request) {
   try {
     const body = await req.json();
-    const { id, status, note } = body;
+    const { id, status, note, markerColor, sender } = body;
     const tickets = getTickets();
     const index = tickets.findIndex((t: any) => t.id === id);
     if (index === -1) return NextResponse.json({ error: "Ticket not found" }, { status: 404 });
     if (status) tickets[index].status = status;
-    if (note) tickets[index].adminNotes.push({ text: note, timestamp: new Date().toISOString() });
+    if (markerColor) tickets[index].markerColor = markerColor;
+    if (note) tickets[index].adminNotes.push({ text: note, timestamp: new Date().toISOString(), sender: sender || "admin" });
     saveTickets(tickets);
     return NextResponse.json(tickets[index]);
   } catch (error: any) { return NextResponse.json({ error: error.message }, { status: 500 }); }

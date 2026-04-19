@@ -1,5 +1,9 @@
 {
-  "message": "READY",
-  "state": "IDLE",
-  "timestamp": "2026-04-18T20:42:23.995Z"
+  "message": "Im drowng",
+  "state": "AWAITING_REVIEW",
+  "timestamp": "2026-04-19T01:59:26.213Z",
+  "victimName": "Madara",
+  "manualLocation": "18.463473736620347, 73.8681408",
+  "origId": "TKT-4613",
+  "isNew": true
 }

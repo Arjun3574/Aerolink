@@ -12,7 +12,7 @@
 const { SerialPort } = require('serialport');
 const { ReadlineParser } = require('@serialport/parser-readline');
 
-const API_ROOT = 'http://localhost:3001/api';
+const API_ROOT = 'http://127.0.0.1:3000/api';
 const BAUD_RATE = 115200;
 const POLL_INTERVAL = 2000; // Poll for Admin replies every 2s
 
@@ -32,6 +32,7 @@ const parser = port.pipe(new ReadlineParser({ delimiter: '\r\n' }));
 
 const seenNoteTimestamps = new Set(); // To avoid repeating admin notes
 let activeTicketIds = new Set();
+const nextjsToVictimId = new Map();
 
 console.log(`\n[BRIDGE] CodeRed Base Station Linked @ ${portPath}`);
 console.log(`[BRIDGE] Protocol: (Name|Location|Message)`);
@@ -44,18 +45,28 @@ parser.on('data', async (line) => {
 
   console.log(`[ESP] Incoming Raw: ${cleanLine}`);
 
-  // Protocol 1: (Name|Location|Message)
-  // Protocol 2: [TKT-1812] Name: Paritosh | Loc: Kantidhan | Msg: My leg is broken
+  let victimName, manualLocation, message, origId;
   const match1 = cleanLine.match(/\(([^|]+)\|([^|]+)\|([^)]+)\)/);
-  const match2 = cleanLine.match(/\[TKT-\d+\]\s*Name:\s*([^|]+)\|\s*Loc:\s*([^|]+)\|\s*Msg:\s*([^]+)/i);
+  const match2 = cleanLine.match(/\[(TKT-\d+)\]\s*Name:\s*([^|]+)\|\s*Loc:\s*([^|]+)\|\s*Msg:\s*([^]+)/i);
   
-  const match = match1 || match2;
-  
-  if (match) {
+  if (match2) {
+    origId = match2[1];
+    victimName = match2[2].trim();
+    manualLocation = match2[3].trim();
+    message = match2[4].trim();
+  } else if (match1) {
+    origId = null;
+    victimName = match1[1].trim();
+    manualLocation = match1[2].trim();
+    message = match1[3].trim();
+  }
+
+  if (victimName) {
     const payload = {
-      victimName: match[1].trim(),
-      manualLocation: match[2].trim(),
-      message: match[3].trim(),
+      victimName,
+      manualLocation,
+      message,
+      origId,
       lat: 0, 
       lng: 0
     };
@@ -63,16 +74,12 @@ parser.on('data', async (line) => {
     console.log(`[BRIDGE] Parsed SOS from ${payload.victimName}. Uplinking...`);
 
     try {
-      const res = await fetch(`${API_ROOT}/data`, {
+      await fetch(`${API_ROOT}/data`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
-      const data = await res.json();
-      if (data.ticketId) {
-        activeTicketIds.add(data.ticketId);
-        console.log(`[BRIDGE] Ticket Created: ${data.ticketId}`);
-      }
+      console.log(`[BRIDGE] Signal Buffered for Admin Review.`);
     } catch (e) { console.error(`[ERROR] Dispatch Offline: ${e.message}`); }
   } else {
     console.log(`[WARN] Non-protocol signal ignored: ${cleanLine}`);
@@ -81,11 +88,8 @@ parser.on('data', async (line) => {
 
 // 2. DOWNLINK: DASHBOARD -> ESP32 BROWADCAST
 setInterval(async () => {
-  if (activeTicketIds.size === 0) return;
-
   try {
-    const ids = Array.from(activeTicketIds).join(',');
-    const res = await fetch(`${API_ROOT}/reconstruct?ids=${ids}`);
+    const res = await fetch(`${API_ROOT}/reconstruct`);
     if (!res.ok) return;
 
     const tickets = await res.json();
@@ -101,8 +105,9 @@ setInterval(async () => {
           
           console.log(`[COMMAND] New Feedback for ${ticket.victimName}: ${note.text}`);
           
-          // Send to ESP32 followed by newline as per ESP code
-          const broadcastMsg = `COMMAND TO ${ticket.victimName.toUpperCase()}: ${note.text.toUpperCase()}\n`;
+          // Send to ESP32 prepending the Unified TKT ID
+          const broadcastMsg = `[${ticket.id}] COMMAND TO ${ticket.victimName.toUpperCase()}: ${note.text.toUpperCase()}\n`;
+          
           port.write(broadcastMsg, (err) => {
             if (err) console.error(`[ERROR] Broadcast Link Failure: ${err.message}`);
           });
@@ -113,3 +118,4 @@ setInterval(async () => {
 }, POLL_INTERVAL);
 
 port.on('error', (err) => console.error(`[CRITICAL] Serial Link Failure: ${err.message}`));
+

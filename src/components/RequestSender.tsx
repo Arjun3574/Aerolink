@@ -91,8 +91,8 @@ export default function RequestSender() {
       </div>
 
       <div className="p-4 border-l-2 border-[var(--emerald-accent)]/20 bg-white/5 space-y-1">
-        <p className="text-[10px] text-[var(--slate-text)] uppercase font-black">Operator Notice</p>
-        <p className="text-[10px] text-[var(--slate-text)] opacity-80 italic">
+        <p className="text-[12px] text-[var(--slate-text)] uppercase font-black">Operator Notice</p>
+        <p className="text-[12px] text-[var(--slate-text)] opacity-80 italic">
           Signals are automatically decrypted via the Gemini Resilience Engine before dispatching forces.
         </p>
       </div>

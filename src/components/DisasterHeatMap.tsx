@@ -30,7 +30,7 @@ export default function DisasterHeatMap() {
     <div className="heatmap-container relative glass-panel">
       <div className="absolute top-4 left-4 z-[1000] p-4 lucid-card bg-[var(--graphite)]/90 backdrop-blur-md">
         <h3 className="text-sm font-bold text-[var(--lavender)] uppercase tracking-widest mb-1">Live Incident Map</h3>
-        <p className="text-[10px] text-[var(--thistle)]">Scanning 248 sectors in real-time</p>
+        <p className="text-[12px] text-[var(--thistle)]">Scanning 248 sectors in real-time</p>
       </div>
 
       <MapContainer 

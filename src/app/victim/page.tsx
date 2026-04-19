@@ -1,295 +1,237 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { 
-  Radio, 
-  Shield, 
-  MessageSquare, 
-  MapPin, 
-  History, 
-  ArrowLeft,
-  Clock,
-  ChevronRight,
-  AlertCircle,
-  Wifi,
-  Activity,
-  Cpu,
-  RefreshCcw,
-  Zap,
-  CheckCircle2
-} from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import { Radio, Shield, History, ArrowLeft, Clock, AlertCircle, Wifi, Activity, Cpu, Zap, CheckCircle2, ChevronRight, Circle, MessageSquare } from "lucide-react";
+
+const MARKER_LABELS: Record<string, { label: string; color: string; description: string }> = {
+  green: { label: "Forces on the way", color: "#47E5BC", description: "Help is being dispatched to your location." },
+  yellow: { label: "Message read", color: "#E5C247", description: "Your message has been received and read by command." },
+  red: { label: "Not read", color: "#E5475A", description: "Your message has not been read yet." },
+  none: { label: "Pending", color: "#5C5F6E", description: "Awaiting admin response." },
+};
 
 export default function VictimPage() {
   const [view, setView] = useState<"monitor" | "history" | "detail">("monitor");
   const [history, setHistory] = useState<any[]>([]);
-  const [selectedTicket, setSelectedTicket] = useState<any>(null);
-  const [externalSignal, setExternalSignal] = useState({ message: "LISTENING...", state: "IDLE", timestamp: "" });
-  const [signalLog, setSignalLog] = useState<{msg: string, time: string, status: string}[]>([]);
+  const [selected, setSelected] = useState<any>(null);
+  const [sig, setSig] = useState({ message: "LISTENING...", state: "IDLE", timestamp: "" });
+  const [log, setLog] = useState<{ msg: string; time: string; status: string }[]>([]);
+  const chatEndRef = useRef<HTMLDivElement>(null);
 
-  // Monitor Polling (ESP32 Integration)
   useEffect(() => {
-    const pollMonitor = async () => {
-      try {
-        const res = await fetch("/api/data");
-        const data = await res.json();
-        
-        if (data.timestamp !== externalSignal.timestamp) {
-           setExternalSignal(data);
-           // Append to log if it's a real signal action
-           if (data.state !== "IDLE") {
-             setSignalLog(prev => [{
-               msg: data.message, 
-               time: new Date(data.timestamp).toLocaleTimeString(),
-               status: data.state
-             }, ...prev].slice(0, 5));
-           }
-        }
-      } catch (err) {
-        console.error("Monitor Sync Error");
-      }
-    };
+    const poll = async () => { try { const r = await fetch("/api/data"); const d = await r.json(); if (d.timestamp !== sig.timestamp) { setSig(d); if (d.state !== "IDLE") setLog(p => [{ msg: d.message, time: new Date(d.timestamp).toLocaleTimeString(), status: d.state }, ...p].slice(0, 5)); } } catch {} };
+    const i = setInterval(poll, 1000); return () => clearInterval(i);
+  }, [sig]);
 
-    const interval = setInterval(pollMonitor, 1000); 
-    return () => clearInterval(interval);
-  }, [externalSignal]);
-
-  // Load mission history
   const fetchHistory = async () => {
-    const savedIds = localStorage.getItem("myDistressTickets");
-    if (!savedIds) return;
-    try {
-      const res = await fetch(`/api/reconstruct?ids=${savedIds}`);
-      if (res.ok) {
-        const data = await res.json();
-        setHistory(data.sort((a: any, b: any) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()));
-        if (selectedTicket) {
-          const updated = data.find((t: any) => t.id === selectedTicket.id);
-          if (updated) setSelectedTicket(updated);
-        }
-      }
-    } catch (err) { console.error(err); }
+    const ids = localStorage.getItem("myDistressTickets"); if (!ids) return;
+    try { const r = await fetch(`/api/reconstruct?ids=${ids}`); if (r.ok) { const d = await r.json(); setHistory(d.sort((a: any, b: any) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())); if (selected) { const u = d.find((t: any) => t.id === selected.id); if (u) setSelected(u); } } } catch {}
   };
 
-  useEffect(() => {
-    fetchHistory();
-    const interval = setInterval(fetchHistory, 5000);
-    return () => clearInterval(interval);
-  }, [selectedTicket]);
+  useEffect(() => { fetchHistory(); const i = setInterval(fetchHistory, 3000); return () => clearInterval(i); }, [selected?.id]);
+  useEffect(() => { chatEndRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }); }, [selected?.adminNotes?.length]);
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] flex flex-col font-serif text-[#0f172a]">
-      {/* Tactical Nav */}
-      <nav className="bg-[#1e293b] text-white px-8 py-4 flex justify-between items-center shadow-xl sticky top-0 z-50 border-b border-blue-500/20">
-        <div className="flex items-center gap-4">
-          <div className="w-10 h-10 bg-blue-600 flex items-center justify-center rounded-sm shadow-[0_0_15px_rgba(37,99,235,0.4)]">
-            <Cpu className="text-white" size={20} />
+    <div className="min-h-screen bg-[var(--bg)] flex flex-col font-[Inter,system-ui,sans-serif] text-[var(--text)]">
+      {/* Nav */}
+      <nav className="bg-[var(--surface)] px-8 py-4 flex justify-between items-center sticky top-0 z-50 border-b border-[var(--border)]">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 bg-[var(--mint)] flex items-center justify-center rounded-lg">
+            <Cpu size={14} className="text-[var(--bg)]" />
           </div>
           <div>
-            <span className="text-sm font-black uppercase tracking-[5px] block">Field Intake Node</span>
-            <div className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
-              <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">ESP32 Loop Active</span>
+            <span className="text-[15px] font-bold uppercase tracking-wide block">Field Node</span>
+            <div className="flex items-center gap-1.5">
+              <span className="status-dot status-dot-live" />
+              <span className="text-[10px] text-[var(--text-3)] font-medium uppercase tracking-wider">ESP32</span>
             </div>
           </div>
         </div>
-        
-        <div className="flex gap-8">
-          <button 
-            onClick={() => setView("monitor")}
-            className={`text-[10px] font-black uppercase tracking-[3px] py-1 border-b-2 transition-all ${view === "monitor" ? "text-blue-400 border-blue-400" : "text-slate-500 border-transparent hover:text-slate-300"}`}
-          >
-            Live Monitor
-          </button>
-          <button 
-            onClick={() => setView("history")}
-            className={`text-[10px] font-black uppercase tracking-[3px] py-1 border-b-2 transition-all flex items-center gap-2 ${view === "history" || view === "detail" ? "text-blue-400 border-blue-400" : "text-slate-500 border-transparent hover:text-slate-300"}`}
-          >
-            <History size={12} /> Mission History
-          </button>
+        <div className="flex gap-5">
+          {(["monitor", "history"] as const).map((t) => (
+            <button key={t} onClick={() => setView(t)} className={`text-[12px] font-semibold uppercase tracking-wider py-1 border-b-2 ${(view === t || (t === "history" && view === "detail")) ? "text-[var(--mint)] border-[var(--mint)]" : "text-[var(--text-3)] border-transparent hover:text-[var(--text)]"}`}>
+              {t === "history" && <History size={11} className="inline mr-1.5" />}{t === "monitor" ? "Monitor" : "History"}
+            </button>
+          ))}
         </div>
       </nav>
 
-      <main className="flex-1 p-8 bg-[#f1f5f9]">
-        <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-500">
-          
-          {/* VIEW: LIVE MONITOR */}
+      <main className="flex-1 p-8">
+        <div className="max-w-4xl mx-auto space-y-6">
+
+          {/* MONITOR */}
           {view === "monitor" && (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-              {/* State Panel */}
-              <div className="lg:col-span-8 space-y-8">
-                <div className="bg-white border border-slate-200 p-10 rounded-sm shadow-2xl relative overflow-hidden">
-                   <div className="absolute top-0 right-0 p-3">
-                      <Wifi size={16} className={externalSignal.state !== "IDLE" ? "text-blue-600 animate-pulse" : "text-slate-100"} />
-                   </div>
-                   
-                   <div className="space-y-12">
-                      <div className="space-y-2">
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-[4px]">Current System State</p>
-                        <h2 className="text-5xl font-normal text-[#1e293b] uppercase tracking-tighter">
-                          {externalSignal.state === "IDLE" ? "LISTENING..." : 
-                           externalSignal.state === "PROCESSING" ? "DECODING..." : 
-                           externalSignal.state === "DISPATCHED" ? "SIGNAL UPLINKED" : externalSignal.state}
-                        </h2>
-                      </div>
-
-                      <div className="bg-slate-50 border border-slate-100 p-8 rounded-sm space-y-4">
-                         <div className="flex justify-between items-center border-b border-slate-200 pb-2">
-                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Active Payload</span>
-                            <span className="text-[9px] font-bold text-blue-600">ID: RF-IOT-{externalSignal.timestamp.slice(-4)}</span>
-                         </div>
-                         <p className="text-3xl font-serif text-slate-800 leading-tight">
-                            "{externalSignal.message}"
-                         </p>
-                         <div className="flex items-center gap-2 pt-2">
-                            <Clock size={12} className="text-slate-300" />
-                            <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">
-                               Captured at: {externalSignal.timestamp ? new Date(externalSignal.timestamp).toLocaleTimeString() : "--:--:--"}
-                            </span>
-                         </div>
-                      </div>
-
-                      <div className="grid grid-cols-3 gap-6">
-                        <div className="p-4 bg-white border border-slate-100 rounded shadow-sm text-center">
-                           <Activity size={16} className="mx-auto mb-2 text-blue-500" />
-                           <p className="text-[8px] font-black text-slate-400 uppercase">Input Node</p>
-                           <p className="text-xs font-bold">ESP32-CORE</p>
-                        </div>
-                        <div className="p-4 bg-white border border-slate-100 rounded shadow-sm text-center">
-                           <Zap size={16} className="mx-auto mb-2 text-amber-500" />
-                           <p className="text-[8px] font-black text-slate-400 uppercase">Triage Mode</p>
-                           <p className="text-xs font-bold">AUTO-INTEL</p>
-                        </div>
-                        <div className="p-4 bg-white border border-slate-100 rounded shadow-sm text-center">
-                           <CheckCircle2 size={16} className="mx-auto mb-2 text-emerald-500" />
-                           <p className="text-[8px] font-black text-slate-400 uppercase">Ticket Status</p>
-                           <p className="text-xs font-bold">{externalSignal.state === "DISPATCHED" ? "VERIFIED" : "WAITING"}</p>
-                        </div>
-                      </div>
-                   </div>
-                </div>
-              </div>
-
-              {/* Signal Waterfall Log */}
-              <div className="lg:col-span-4 space-y-6">
-                 <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[4px] mt-2">Signal Waterfall</h3>
-                 <div className="space-y-4">
-                    {signalLog.map((log, i) => (
-                      <div key={i} className="bg-white border border-slate-200 p-4 rounded-sm shadow-sm animate-in slide-in-from-right-4 transition-all border-l-4 border-l-blue-500">
-                         <div className="flex justify-between items-center mb-2">
-                            <span className="text-[8px] font-black text-blue-600 uppercase tracking-widest">{log.status}</span>
-                            <span className="text-[8px] text-slate-300 font-bold">{log.time}</span>
-                         </div>
-                         <p className="text-xs font-serif text-slate-600 italic">"{log.msg.slice(0, 40)}{log.msg.length > 40 ? "..." : ""}"</p>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+              <div className="lg:col-span-8">
+                <div className="bento-card p-8 space-y-8">
+                  <div>
+                    <p className="stat-label mb-2">System State</p>
+                    <h2 className="text-4xl font-extralight text-[var(--mint)] uppercase tracking-tighter">
+                      {sig.state === "IDLE" ? "LISTENING..." : sig.state === "PROCESSING" ? "DECODING..." : sig.state === "DISPATCHED" ? "UPLINKED" : sig.state}
+                    </h2>
+                  </div>
+                  <div className="p-5 rounded-lg bg-[var(--bg)] border border-[var(--border)] space-y-3">
+                    <div className="flex justify-between text-[11px] text-[var(--text-3)] pb-2 border-b border-[var(--border)]">
+                      <span>Payload</span>
+                      <span className="text-[var(--teal)]">RF-IOT-{sig.timestamp.slice(-4)}</span>
+                    </div>
+                    <p className="text-2xl font-extralight text-[var(--text)] italic">&ldquo;{sig.message}&rdquo;</p>
+                    <p className="text-[11px] text-[var(--text-3)] flex items-center gap-1"><Clock size={10} /> {sig.timestamp ? new Date(sig.timestamp).toLocaleTimeString() : "--:--:--"}</p>
+                  </div>
+                  <div className="grid grid-cols-3 gap-3">
+                    {[{ icon: Activity, l: "Node", v: "ESP32", c: "var(--mint)" }, { icon: Zap, l: "Triage", v: "Auto", c: "var(--warning)" }, { icon: CheckCircle2, l: "Status", v: sig.state === "DISPATCHED" ? "Verified" : "Wait", c: "var(--teal)" }].map((s, i) => (
+                      <div key={i} className="lucid-card p-3 text-center">
+                        <s.icon size={14} style={{ color: s.c }} className="mx-auto mb-1" />
+                        <p className="text-[9px] text-[var(--text-3)] uppercase">{s.l}</p>
+                        <p className="text-[12px] font-semibold">{s.v}</p>
                       </div>
                     ))}
-                    {signalLog.length === 0 && (
-                      <div className="py-20 text-center opacity-10">
-                         <Radio size={32} className="mx-auto mb-4 animate-ping" />
-                         <p className="text-[8px] font-black uppercase tracking-widest">Scanning Frequencies...</p>
-                      </div>
-                    )}
-                 </div>
+                  </div>
+                </div>
+              </div>
+              <div className="lg:col-span-4 space-y-3">
+                <h3 className="text-[15px] font-bold">Signal Log</h3>
+                {log.map((l, i) => (
+                  <div key={i} className="lucid-card p-3" style={{ borderLeftWidth: '2px', borderLeftColor: 'var(--mint)' }}>
+                    <div className="flex justify-between mb-1.5">
+                      <span className="text-[10px] font-semibold text-[var(--teal)] uppercase">{l.status}</span>
+                      <span className="text-[10px] text-[var(--text-3)]">{l.time}</span>
+                    </div>
+                    <p className="text-[13px] text-[var(--text-2)] italic">&ldquo;{l.msg.slice(0, 40)}{l.msg.length > 40 ? "..." : ""}&rdquo;</p>
+                  </div>
+                ))}
+                {log.length === 0 && <div className="py-16 text-center"><Radio size={24} className="mx-auto mb-2 text-[var(--text-3)] opacity-15" /><p className="text-[11px] text-[var(--text-3)] uppercase tracking-wider">Scanning...</p></div>}
               </div>
             </div>
           )}
 
-          {/* VIEW: LOG LIST (Same as before but filtered for ESP32 or all) */}
+          {/* HISTORY */}
           {view === "history" && (
-            <div className="space-y-6 bg-white p-10 border border-slate-200 shadow-xl">
-               <h2 className="text-2xl text-[#1e293b] font-normal uppercase tracking-widest border-b border-slate-200 pb-4">Incident Log • Registered Items</h2>
-               <div className="space-y-3 pt-6">
-                 {history.length > 0 ? history.map((t) => (
-                   <div 
-                    key={t.id}
-                    onClick={() => { setSelectedTicket(t); setView("detail"); }}
-                    className="group border-b border-slate-100 py-6 flex items-center justify-between hover:bg-slate-50/50 cursor-pointer transition-all px-4"
-                   >
-                     <div className="space-y-2">
-                        <div className="flex items-center gap-3">
-                           <span className="text-[10px] font-black text-blue-600 uppercase tracking-[2px]">{t.category}</span>
-                           <span className="text-[8px] text-slate-300 font-bold uppercase tracking-widest border border-slate-100 px-2 py-0.5 rounded-full">
-                              {t.source || "External Module"}
-                           </span>
+            <div className="bento-card p-6 space-y-4">
+              <h2 className="text-base font-bold border-b border-[var(--border)] pb-3">Incident Log</h2>
+              {history.length > 0 ? history.map((t) => {
+                const marker = MARKER_LABELS[t.markerColor || "none"];
+                return (
+                  <div key={t.id} onClick={() => { setSelected(t); setView("detail"); }} className="group flex items-center justify-between py-4 px-3 border-b border-[var(--border)] last:border-b-0 cursor-pointer hover:bg-[var(--surface-2)] rounded-lg">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-[11px] font-semibold text-[var(--teal)] uppercase">{t.category}</span>
+                        {/* Marker status */}
+                        <div className="flex items-center gap-1">
+                          <Circle size={8} fill={marker.color} stroke="none" />
+                          <span className="text-[10px] font-semibold" style={{ color: marker.color }}>{marker.label}</span>
                         </div>
-                        <h4 className="text-xl font-normal text-slate-800 uppercase tracking-tight leading-none group-hover:text-blue-600 transition-colors">
-                           {t.reconstructed}
-                        </h4>
-                        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
-                           Signal Integrity: High • Latency: 42ms • {new Date(t.timestamp).toLocaleTimeString()}
-                        </p>
-                     </div>
-                     <div className="text-right">
-                        <p className={`text-[10px] font-black uppercase px-3 py-1 rounded-sm border ${
-                          t.status === "received" ? "bg-blue-50 text-blue-600 border-blue-200" : "bg-slate-50 text-slate-400 border-slate-200"
-                        }`}>
-                          {t.status}
-                        </p>
-                     </div>
-                   </div>
-                 )) : (
-                   <div className="text-center py-20 opacity-20">
-                     <AlertCircle size={48} className="mx-auto mb-4" />
-                     <p className="text-[10px] font-bold uppercase tracking-widest">Mission Index Empty</p>
-                   </div>
-                 )}
-               </div>
+                      </div>
+                      <p className="text-[16px] font-medium text-[var(--text)] truncate group-hover:text-[var(--mint)]">{t.reconstructed}</p>
+                      <p className="text-[11px] text-[var(--text-3)] mt-0.5">{new Date(t.timestamp).toLocaleTimeString()}</p>
+                    </div>
+                    <div className="flex items-center gap-2 ml-3 shrink-0">
+                      {t.adminNotes?.length > 0 && <MessageSquare size={12} className="text-[var(--plum)]" />}
+                      <ChevronRight size={14} className="text-[var(--text-3)] group-hover:text-[var(--mint)]" />
+                    </div>
+                  </div>
+                );
+              }) : (
+                <div className="py-16 text-center"><AlertCircle size={28} className="mx-auto mb-2 text-[var(--text-3)] opacity-15" /><p className="text-[13px] text-[var(--text-3)]">No missions</p></div>
+              )}
             </div>
           )}
 
-          {/* DETAIL VIEW (Unchanged, for consistency) */}
-          {view === "detail" && selectedTicket && (
-            <div className="space-y-6 animate-in slide-in-from-left-4">
-              <button onClick={() => setView("history")} className="flex items-center gap-2 text-[10px] font-black uppercase text-slate-400 hover:text-blue-600">
-                <ArrowLeft size={12} /> Return to Mission Index
-              </button>
-              <div className="bg-white border border-slate-300 p-10 shadow-2xl space-y-10">
-                 <div className="flex justify-between items-start border-b border-slate-100 pb-8">
-                    <div className="space-y-2">
-                       <p className="text-[10px] font-black text-blue-600 uppercase tracking-widest">Strategic Asset: {selectedTicket.id}</p>
-                       <h3 className="text-3xl text-slate-900 font-normal uppercase tracking-tight">{selectedTicket.category}</h3>
+          {/* DETAIL */}
+          {view === "detail" && selected && (() => {
+            const marker = MARKER_LABELS[selected.markerColor || "none"];
+            return (
+              <div className="space-y-4">
+                <button onClick={() => setView("history")} className="sleek-btn sleek-btn-ghost text-[12px]"><ArrowLeft size={12} /> Back</button>
+                <div className="bento-card p-6 space-y-5">
+                  {/* Header */}
+                  <div className="flex justify-between items-start pb-4 border-b border-[var(--border)]">
+                    <div>
+                      <p className="text-[11px] text-[var(--teal)] font-semibold uppercase tracking-wider mb-1">Ticket: {selected.id}</p>
+                      <h3 className="text-lg font-bold">{selected.category}</h3>
                     </div>
-                    <div className="text-center p-4 bg-slate-50 border border-slate-200">
-                       <p className="text-[8px] font-black uppercase tracking-widest text-slate-400 mb-1">Status</p>
-                       <p className="text-sm font-bold text-blue-600 uppercase">{selectedTicket.status}</p>
+                    <div className="text-center px-4 py-2 rounded-lg bg-[var(--surface-2)] border border-[var(--border)]">
+                      <p className="text-[9px] text-[var(--text-3)] uppercase tracking-wider mb-0.5">Status</p>
+                      <p className="text-sm font-semibold text-[var(--mint)]">{selected.status}</p>
                     </div>
-                 </div>
-                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                   <div className="space-y-6">
-                      <div className="space-y-3">
-                         <p className="stat-label">Raw Telemetry</p>
-                         <div className="p-4 bg-slate-50 border border-slate-200 font-mono text-xs text-slate-500 rounded italic">"{selectedTicket.original}"</div>
+                  </div>
+
+                  {/* Marker Banner */}
+                  <div className="p-4 rounded-lg border flex items-center gap-4" style={{ borderColor: marker.color, backgroundColor: `${marker.color}08` }}>
+                    <Circle size={16} fill={marker.color} stroke="none" className="shrink-0" />
+                    <div>
+                      <p className="text-[15px] font-bold" style={{ color: marker.color }}>{marker.label}</p>
+                      <p className="text-[13px] text-[var(--text-2)] mt-0.5">{marker.description}</p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    {/* Left: Signal data */}
+                    <div className="space-y-4">
+                      {/* Raw / Broken message */}
+                      <div>
+                        <p className="stat-label mb-1.5 flex items-center gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[var(--danger)]" /> Your Original Message (Broken)
+                        </p>
+                        <div className="p-3 rounded-lg bg-[var(--bg)] border border-[var(--border)] font-mono text-[14px] text-[var(--danger)] italic leading-relaxed">
+                          &ldquo;{selected.original}&rdquo;
+                        </div>
                       </div>
-                      <div className="space-y-3">
-                         <p className="stat-label">AI Intelligence</p>
-                         <p className="text-2xl text-slate-800 leading-snug uppercase tracking-tighter">{selectedTicket.reconstructed}</p>
+                      {/* Decoded */}
+                      <div>
+                        <p className="stat-label mb-1.5 flex items-center gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[var(--mint)]" /> AI Decoded Message
+                        </p>
+                        <div className="p-3 rounded-lg bg-[var(--surface-2)] border border-[var(--border)] text-[16px] text-[var(--text)] font-medium leading-snug">
+                          {selected.reconstructed}
+                        </div>
                       </div>
-                   </div>
-                   <div className="space-y-6">
-                      <div className="space-y-3">
-                         <p className="stat-label">Command Log</p>
-                         <div className="space-y-4 max-h-[200px] overflow-y-auto pr-4">
-                           {selectedTicket.adminNotes.length > 0 ? selectedTicket.adminNotes.map((n: any, i: number) => (
-                             <div key={i} className="flex gap-4 items-start border-l-2 border-blue-100 pl-4 py-1">
-                                <Shield size={12} className="text-blue-600 mt-1" />
-                                <div>
-                                   <p className="text-sm text-slate-700 leading-relaxed font-serif uppercase tracking-tight">{n.text}</p>
-                                   <p className="text-[8px] text-slate-400 uppercase font-black">{new Date(n.timestamp).toLocaleTimeString()}</p>
+                    </div>
+
+                    {/* Right: Messages from command */}
+                    <div className="flex flex-col">
+                      <p className="stat-label mb-1.5">Messages from Command</p>
+                      <div className="flex-1 min-h-[180px] max-h-[350px] overflow-y-auto rounded-lg bg-[var(--bg)] border border-[var(--border)] p-3 space-y-2 custom-scrollbar">
+                        {selected.adminNotes?.length > 0 ? selected.adminNotes.map((n: any, i: number) => {
+                          const isMarker = n.text.startsWith("[MARKER]");
+                          return (
+                            <div key={i} className={`flex flex-col ${isMarker ? "items-center" : "items-start"}`}>
+                              {isMarker ? (
+                                <div className="px-3 py-1.5 rounded-full bg-[var(--surface-2)] border border-[var(--border)] text-[11px] text-[var(--text-3)] text-center">
+                                  {n.text.replace("[MARKER] ", "")} · {new Date(n.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                 </div>
-                             </div>
-                           )) : <p className="text-[10px] text-slate-300 italic">No command feedback issued.</p>}
-                         </div>
+                              ) : (
+                                <div className="max-w-[85%]">
+                                  <div className="flex items-center gap-1.5 mb-0.5">
+                                    <Shield size={9} className="text-[var(--teal)]" />
+                                    <span className="text-[10px] font-semibold text-[var(--teal)] uppercase tracking-wider">Command</span>
+                                  </div>
+                                  <div className="px-3 py-2 rounded-lg bg-[var(--surface-2)] border border-[var(--border)]">
+                                    <p className="text-[14px] text-[var(--text)] leading-relaxed">{n.text}</p>
+                                  </div>
+                                  <p className="text-[10px] text-[var(--text-3)] mt-0.5">{new Date(n.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                                </div>
+                              )}
+                            </div>
+                          );
+                        }) : (
+                          <div className="flex items-center justify-center h-full py-8">
+                            <p className="text-[12px] text-[var(--text-3)] italic">No messages from command yet</p>
+                          </div>
+                        )}
+                        <div ref={chatEndRef} />
                       </div>
-                   </div>
-                 </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          )}
-
+            );
+          })()}
         </div>
       </main>
 
-      <footer className="mt-auto p-12 text-center text-[10px] text-slate-400 font-black uppercase tracking-[8px] opacity-20 border-t border-slate-200">
-         Disas-ED Autonomous Response Node • Security Clearance ALPHA-9
+      <footer className="mt-auto py-6 text-center text-[11px] text-[var(--text-3)] uppercase tracking-[4px] border-t border-[var(--border)]">
+        Aerolink Field Node · Alpha-9
       </footer>
     </div>
   );
