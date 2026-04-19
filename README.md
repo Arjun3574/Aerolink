@@ -1,91 +1,99 @@
-# 🛰️ Aerolink Basecamp: Tactical AI Command Center
+# Aerolink Basecamp: Tactical Disaster Response Portal
 
-> **Next-Generation Emergency Response Platform with AI-Driven Signal Reconstruction & GIS Intelligence.**
+[![License: MIT](https://img.shields.io/badge/License-MIT-teal.svg)](https://opensource.org/licenses/MIT)
+[![Version](https://img.shields.io/badge/Version-4.3.0-orange.svg)]()
+[![Stack](https://img.shields.io/badge/Stack-Next.js%2016%20|%20LoRa%20|%20Gemini-blue.svg)]()
 
-Aerolink Basecamp is a professional-grade dispatcher portal designed to handle low-power, fragmented emergency signals from the field. By combining proprietary **ESP32 SOS Hardware** with **Generative AI (Gemini)**, the system bridge the gap between unstable analog transmissions and high-fidelity rescue operations.
+## 🛰 Overview
+**Aerolink Basecamp** is an industry-grade, tactical Command & Control (C2) platform designed for mission-critical disaster management. It bridges the gap between field-level fragmented signals and high-level medical/rescue coordination through a combination of **LoRa mesh networking**, **Generative AI reconstruction**, and **GIS situational mapping**.
+
+In environments where cellular infrastructure has collapsed, Aerolink provides a resilient backbone for extracting, decoding, and prioritizing SOS signals to ensure every second counts.
 
 ---
 
-## 🛠️ System Architecture
+## 🚀 Core Pillars
 
-Aerolink follows a robust, four-tier architectural model designed for maximum reliability in high-stress disaster environments.
+### 1. LoRa Mesh Tactical Networking
+The system utilizes **SX1278 LoRa modules** paired with high-gain antennas to establish a long-range, low-power mesh network. 
+- **Signal Interception**: Captures raw byte-streams from field-deployed ESP32 nodes.
+- **Resilient Bridge**: A custom Node.js bridge (`bridge.js`) handles bidirectional serial-to-web uplinks, allowing the Base Station to function as the primary sink for all mesh traffic.
+
+### 2. AI/ML Intelligence Engine
+Fragmented or corrupted signals are processed via the **Gemini 1.5 Intelligence Module**.
+- **Neural Reconstruction**: Decodes highly compressed or typo-heavy Morse/Text inputs into professional emergency reports.
+- **Priority Board**: Uses Machine Learning to score incoming signals based on medical urgency, hazard levels, and casualty counts, automatically moving critical cases to the top of the rescue queue.
+
+### 3. GIS Tactical Mapping
+Full spatial awareness is integrated using **SituationalMap (Pigeon-Maps Integration)**.
+- **Haversine Distance Tracking**: Automatically calculates the exact distance between the Command Center (Admin Node) and the victim.
+- **Live Geolocation**: Anchors the Base Station using browser-level Geolocation APIs and renders dynamic victim markers with real-time status pulses.
+
+---
+
+## 🏗 System Architecture
+
+The project follows a clean, modular architecture designed for high availability and low latency:
 
 ```mermaid
 graph TD
-    subgraph "Edge Layer (Field)"
-        ESP[ESP32 SOS Nodes] -- "UDP / Mesh" --> BS[Base Station Transceiver]
+    subgraph "Field Layer (Tactical)"
+        A[Victim Node - ESP32] -->|LoRa Signal| B[Mesh Relay]
+        B -->|LoRa Signal| C[Admin Node - ESP32]
     end
-
-    subgraph "Bridge Layer (Serial Handshake)"
-        BS -- "Serial (COM)" --> NB[Node.js Bridge]
-        NB -- "REST Uplink" --> API[Next.js API Routes]
+    
+    subgraph "Bridge Layer (Serial/Socket)"
+        C -->|Serial/USB| D[Node.js Bridge - bridge.js]
+        D -->|JSON Buffer| E[Local Data Cache]
     end
-
-    subgraph "Intelligence Layer (AI Cloud)"
-        API -- "Reconstruct Request" --> Gemini(Google Gemini AI)
-        Gemini -- "Structured JSON" --> API
-    end
-
-    subgraph "Command Layer (UI)"
-        API -- "Live Stream" --> Dashboard[Dispatcher Dashboard]
-        Dashboard -- "GIS Data" --> Map[Tactical Mapping System]
+    
+    subgraph "Application Layer (Control)"
+        E -->|API Route| F[Next.js 16 Dashboard]
+        F -->|Gemini API| G[AI Reconstruction]
+        F -->|Pigeon Maps| H[GIS Mapping System]
     end
 ```
 
 ---
 
-## 🧠 Core Intelligence Features
+## 🛠 Tech Stack
 
-### 📡 ML-Driven Signal Reconstruction
-In disaster zones, signals are often noisy and fragmented due to distance or hardware limitations. Aerolink integrates **Google Gemini 2.0 Flash** to perform real-time signal restoration:
-- **Heuristic Cleansing**: AI analyzes fragmented packets and reconstructs raw transmissions into professional, actionable intelligence.
-- **Multimodal Context**: The AI considers victim names and manual location strings to verify the signal's authenticity and context.
-
-### ⚖️ Automated AI Triage (Priority Board)
-Not all emergencies can be attended to simultaneously. Aerolink features a proprietary **PriorityBoard**:
-- **ML Scoring**: A specialized ML model analyzes every incoming ticket to generate a dynamic **Urgency Score (1-10)**.
-- **Dynamic Scheduling**: The dashboard automatically rearranges field resources based on AI-assessed risk factors (Trauma, Fire, Drowning).
-- **Resource Allocation**: Dispatchers are presented with a prioritized queue, ensuring critical lives are addressed first without human bottlenecking.
+- **Framework**: [Next.js 16 (App Router)](https://nextjs.org/)
+- **UI Architecture**: Tailwind CSS + Lucid Design Tokens
+- **Icons**: Lucide-React
+- **Mapping**: Pigeon Maps (Lightweight OSM integration)
+- **Intelligence**: Google Gemini 1.5 Flash (Generative Intelligence)
+- **Runtime**: Node.js & SerialPort Interfacing
 
 ---
 
-## 🗺️ Tactical GIS Intelligence
+## ⚙️ Setup & Execution
 
-- **Situational Mapping**: Driven by `pigeon-maps`, the dashboard provides a high-resolution, interactive tactical layer including:
-    - **Real-Time Anchoring**: Automatic Base Station anchoring via browser Geolocation.
-    - **Distance Tracking**: Precise Haversine-based distance calculations between Command and the Victim.
-    - **GIS Controls**: Integrated D-Pad navigation and full-modal map expansion for high-level "big picture" visibility.
+### 1. Environment Configuration
+Create a `.env.local` file in the root directory:
+```env
+NEXT_PUBLIC_GEMINI_API_KEY=your_gemini_api_key
+ENCRYPTION_KEY=tactical_key_here
+```
 
----
+### 2. Physical Bridge Setup
+Connect your ESP32 Master Node to the COM port and start the bridge:
+```bash
+node scripts/bridge.js COM12 # Replace with your COM port
+```
 
-## 💻 Technical Stack
-
-- **Framework**: [Next.js 16](https://nextjs.org) (App Router, Turbopack)
-- **Language**: TypeScript (Strict Type Safety)
-- **Aesthetics**: Aerolink Minimalist Design System (Custom Charcoal/Off-White Palette)
-- **GIS Mapping**: Pigeon Maps with Interactive GIS Modules
-- **Hardware Integration**: ESP32 SOS Network via Node.js Serial Bridge
-- **AI Core**: Google Gemini 2.0 Flash (via Generative Language API)
-
----
-
-## 🚀 Getting Started
-
-1. **Hardware Setup**: Flash the ESP32 units in the `hardware/` directory and ensure the Base Station is linked via USB.
-2. **Bridge Handshake**:
-    ```bash
-    node scripts/bridge.js COM12 # Replace with your Base Station port
-    ```
-3. **Launch Command Space**:
-    ```bash
-    npm run dev
-    ```
-4. **Deploy**: Optimized for high-performance deployment on Vercel or private local networks.
+### 3. Web Dashboard
+Install dependencies and launch the tactical portal:
+```bash
+npm install
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) to access the **Basecamp Command Center**.
 
 ---
 
-> [!IMPORTANT]
-> **Aerolink Basecamp** is built for high-stakes competition. All systems, including AI reconstruction and GIS tracking, are fully integrated and ready for field stress-testing.
+## 🛡 Security & Resilience
+- **Status Markers**: Bidirectional feedback ensures field nodes receive visual acknowledgment (LED/OLED) when a signal is "Read" or "Forces En Route".
+- **Local Persistence**: AI logs and dispatcher notes are cached to ensure continuity during temporary uplink failures.
 
 ---
-© 2026 Aerolink Tactical Systems.
+*Developed for tactical emergency response and high-stakes rescue coordination.*
